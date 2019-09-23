@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>Welcome Page</title>
+	<meta charset="UTF-8">
+	<meta name="keywords" content="HTML, JAVASCRIPT">
+	<meta name="description" content="Welcome page">
+	<meta name="author" content="Jing Wang">
+</head>
+
+<h1>Welcome! Please sign up!</h1>
+
+<body onload="getTimeStamp()">
+<form id="myForm" method="get" action="formProcessor.html">
+	<p>Account Name: <input type="text" name="name" pattern="[a-zA-Z0-9]+"><small>Can only contain letters and numbers</small></p>
+	<p>Display Name: <input type="text" name="nickname"></p>
+	<p>Email Address: <input type="email" name="email"></p>
+	<p>Phone Number: <input type="Tel" name="phonenumber" pattern="\d\d\d-\d\d\d-\d\d\d\d"><small>Format: 123-456-7890</small></p>
+	<p>Date of Birth: <input type="date" name="dob"></p>
+	<p>Zipcode: <input type="text" name="zipcode" pattern="\d\d\d\d\d"><small>Format: 12345</small></p>
+	<p>Password: <input type="password" name="password"></p>
+	<p>Password Confirmation: <input type="password" name="password2"></p>
+	<p><input type="hidden" name="TimeStamp" id="timestamp"></p>
+	<br>
+	<br>
+	<input type="submit" value="Submit" onclick="return doSomething()">
+	<input type="button" value="Clear" onclick="doSomethingelse()">
+</form>
+
+<script  type="text/javascript">
+	function doSomething(form){
+		var a = document.forms["myForm"]["name"].value;
+		var b = document.forms["myForm"]["email"].value;
+		var c = document.forms["myForm"]["phonenumber"].value;
+		var d = new Date(document.forms["myForm"]["dob"].value);
+		var e = document.forms["myForm"]["zipcode"].value;
+		var f = document.forms["myForm"]["password"].value;
+		var g = document.forms["myForm"]["password2"].value;
+
+        var dtCurrent = new Date();
+		if (a == ""){
+			alert("Account Name must be filled out");
+			return false;
+		}
+		if (b == ""){
+			alert("Email must be filled out");
+			return false;
+		}
+		if (c == ""){
+			alert("Phone Number must be filled out");
+			return false;
+		}
+		if (d == ""){
+			alert("Date of Birth must be filled out");
+			return false;
+		}
+		if (e == ""){
+			alert("Zipcode must be filled out");
+			return false;
+		}
+		if (f == ""){
+			alert("Password must be filled out");
+			return false;
+		}
+		if (g == ""){
+			alert("Password Confirmation must be filled out");
+			return false;
+		}
+		if (a.match(/^\d/)){
+			alert("Account Name must start with letter");
+			return false;
+		}
+		if (f != g){
+			alert("Password does not match Password Confirmation");
+			return false;
+		}
+
+		return checkWhetherOverEighteen(d, dtCurrent);
+	}
+function doSomethingelse(){
+	document.getElementById("myForm").reset();
+}
+
+function checkWhetherOverEighteen(date, dtCurrent) {
+		if (dtCurrent.getFullYear() - date.getFullYear() < 18) {
+				alert("Only individuals 18 years of age or older can register");
+                return false;
+            }
+ 
+        if (dtCurrent.getFullYear() - date.getFullYear() == 18) {
+ 
+                //CD: 11/06/2018 and DB: 15/07/2000. Will turned 18 on 15/07/2018.
+            if (dtCurrent.getMonth() < date.getMonth()) {
+				alert("Only individuals 18 years of age or older can register");
+                return false;
+            }
+            if (dtCurrent.getMonth() == date.getMonth()) {
+                //CD: 11/06/2018 and DB: 15/06/2000. Will turned 18 on 15/06/2018.
+                if (dtCurrent.getDate() < date.getDate()) {
+					alert("Only individuals 18 years of age or older can register");
+                    return false;
+                }
+            }
+        }
+}
+
+function getTimeStamp(){
+			var currTime = new Date().getTime();
+			document.getElementById("timestamp").value = currTime;
+		}
+</script>
+</body>
+</html>
